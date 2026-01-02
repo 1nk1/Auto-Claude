@@ -4,6 +4,7 @@ import '@xterm/xterm/css/xterm.css';
 import { FileDown } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useTerminalStore } from '../stores/terminal-store';
+import { useSettingsStore } from '../stores/settings-store';
 import type { TerminalProps } from './terminal/types';
 import { TerminalHeader } from './terminal/TerminalHeader';
 import { useXterm } from './terminal/useXterm';
@@ -29,6 +30,8 @@ export function Terminal({
   const setClaudeMode = useTerminalStore((state) => state.setClaudeMode);
   const updateTerminal = useTerminalStore((state) => state.updateTerminal);
   const setAssociatedTask = useTerminalStore((state) => state.setAssociatedTask);
+  
+  const settings = useSettingsStore((state) => state.settings);
 
   const associatedTask = terminal?.associatedTaskId
     ? tasks.find((t) => t.id === terminal.associatedTaskId)
@@ -64,6 +67,8 @@ export function Terminal({
         window.electronAPI.resizeTerminal(id, cols, rows);
       }
     },
+    fontFamily: settings.terminalFontFamily,
+    fontSize: settings.terminalFontSize,
   });
 
   // Create PTY process

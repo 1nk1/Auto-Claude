@@ -48,7 +48,10 @@ export const DEFAULT_APP_SETTINGS = {
   // Beta updates opt-in (receive pre-release versions)
   betaUpdates: false,
   // Language preference (default to English)
-  language: 'en' as const
+  language: 'en' as const,
+  // Terminal appearance
+  terminalFontFamily: 'Fira Code',
+  terminalFontSize: 13
 };
 
 // ============================================

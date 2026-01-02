@@ -274,6 +274,9 @@ export interface AppSettings {
   customIDEPath?: string;      // For 'custom' IDE
   preferredTerminal?: SupportedTerminal;
   customTerminalPath?: string; // For 'custom' terminal
+  // Terminal appearance
+  terminalFontFamily?: string;  // Font family for terminal (e.g., 'Fira Code', 'JetBrains Mono')
+  terminalFontSize?: number;    // Font size for terminal (default: 13)
 }
 
 // Auto-Claude Source Environment Configuration (for auto-claude repo .env)

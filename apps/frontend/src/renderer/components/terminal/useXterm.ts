@@ -9,9 +9,17 @@ interface UseXtermOptions {
   terminalId: string;
   onCommandEnter?: (command: string) => void;
   onResize?: (cols: number, rows: number) => void;
+  fontFamily?: string;
+  fontSize?: number;
 }
 
-export function useXterm({ terminalId, onCommandEnter, onResize }: UseXtermOptions) {
+export function useXterm({ 
+  terminalId, 
+  onCommandEnter, 
+  onResize, 
+  fontFamily = 'Fira Code',
+  fontSize = 13 
+}: UseXtermOptions) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const xtermRef = useRef<XTerm | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
@@ -26,8 +34,8 @@ export function useXterm({ terminalId, onCommandEnter, onResize }: UseXtermOptio
     const xterm = new XTerm({
       cursorBlink: true,
       cursorStyle: 'block',
-      fontSize: 13,
-      fontFamily: 'var(--font-mono), "JetBrains Mono", Menlo, Monaco, "Courier New", monospace',
+      fontSize,
+      fontFamily: `"${fontFamily}", var(--font-mono), "JetBrains Mono", Menlo, Monaco, "Courier New", monospace`,
       lineHeight: 1.2,
       letterSpacing: 0,
       theme: {

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Code, Terminal, RefreshCw, Loader2, Check, FolderOpen } from 'lucide-react';
+import { Code, Terminal, RefreshCw, Loader2, Check, FolderOpen, Type } from 'lucide-react';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -141,6 +141,23 @@ export function DevToolsSettings({ settings, onSettingsChange }: DevToolsSetting
       ...settings,
       customTerminalPath: path
     });
+  };
+
+  const handleTerminalFontFamilyChange = (fontFamily: string) => {
+    onSettingsChange({
+      ...settings,
+      terminalFontFamily: fontFamily
+    });
+  };
+
+  const handleTerminalFontSizeChange = (fontSize: string) => {
+    const size = parseInt(fontSize, 10);
+    if (!isNaN(size) && size >= 8 && size <= 24) {
+      onSettingsChange({
+        ...settings,
+        terminalFontSize: size
+      });
+    }
   };
 
   // Build IDE options with detection status
@@ -360,6 +377,68 @@ export function DevToolsSettings({ settings, onSettingsChange }: DevToolsSetting
               </div>
             </div>
           )}
+        </div>
+
+        {/* Terminal Appearance */}
+        <div className="space-y-4 pt-4 border-t">
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2">
+              <Type className="h-4 w-4" />
+              {t('devtools.terminal.appearance', 'Terminal Appearance')}
+            </Label>
+            
+            {/* Font Family */}
+            <div className="space-y-2">
+              <Label htmlFor="terminal-font-family" className="text-sm text-muted-foreground">
+                {t('devtools.terminal.fontFamily', 'Font Family')}
+              </Label>
+              <Select
+                value={settings.terminalFontFamily || 'Fira Code'}
+                onValueChange={handleTerminalFontFamilyChange}
+              >
+                <SelectTrigger id="terminal-font-family">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Fira Code">Fira Code</SelectItem>
+                  <SelectItem value="JetBrains Mono">JetBrains Mono</SelectItem>
+                  <SelectItem value="Cascadia Code">Cascadia Code</SelectItem>
+                  <SelectItem value="Source Code Pro">Source Code Pro</SelectItem>
+                  <SelectItem value="Hack">Hack</SelectItem>
+                  <SelectItem value="Inconsolata">Inconsolata</SelectItem>
+                  <SelectItem value="Monaco">Monaco</SelectItem>
+                  <SelectItem value="Menlo">Menlo</SelectItem>
+                  <SelectItem value="Consolas">Consolas</SelectItem>
+                  <SelectItem value="Courier New">Courier New</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                {t('devtools.terminal.fontFamilyDescription', 'Choose a monospace font for the terminal')}
+              </p>
+            </div>
+
+            {/* Font Size */}
+            <div className="space-y-2">
+              <Label htmlFor="terminal-font-size" className="text-sm text-muted-foreground">
+                {t('devtools.terminal.fontSize', 'Font Size')}
+              </Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  id="terminal-font-size"
+                  type="number"
+                  min="8"
+                  max="24"
+                  value={settings.terminalFontSize || 13}
+                  onChange={(e) => handleTerminalFontSizeChange(e.target.value)}
+                  className="w-20"
+                />
+                <span className="text-sm text-muted-foreground">px</span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {t('devtools.terminal.fontSizeDescription', 'Size of the terminal text (8-24px)')}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Detection Summary */}
